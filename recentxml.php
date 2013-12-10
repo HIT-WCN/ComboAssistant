@@ -1,10 +1,10 @@
-﻿<?php
+<?php
         set_time_limit(10000);  //允许处理时间
         //连接数据库
         $con = mysql_connect('localhost', 'root', 'root') or 
             die ("connect failed" . mysql_error());
         mysql_select_db("ca") or die(mysql_error());
-        mysql_query("set names 'utf8'");
+        mysql_query("set names utf8");
         $operator="CMCC";
 
         //处理每个XML文件,写入数据库
@@ -37,9 +37,9 @@
 			$info = $a["info"];
            
 
-			mysql_query("insert into combo values('$name','$info')", $con);
+			mysql_query("insert into combo (name,info) values('$name','$info')", $con);
            // mysql_query("insert into combo values('$name','$operator','$info')", $con);
-           // mysql_query("update  values('$name','$operator','$info')", $con);
+           //mysql_query("update  update combo set name='$name' info='$info' ",$con);
 		}
         xml_parser_free($xmlparser);
         }
