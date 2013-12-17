@@ -18,13 +18,24 @@
   <div>
       <!--页导航-->
       <ul class="nav nav-tabs">
-         <li class="active"><a href="#upload_bill" data-toggle="tab" >上传账单</a></li>
-         <li class=""><a href="#input_bill" data-toggle="tab" >手动输入</a></li>
+      <li class="active"><a href="#input_bill" data-toggle="tab" >手动输入</a></li>
+      <li class=""><a href="#upload_bill" data-toggle="tab" >上传账单</a></li>  
       </ul>
-      
-       <!--页1-->
       <div class="tab-content">
-         <div class="tab-pane active" id="upload_bill">
+         <!--页1-->
+         <div class="tab-pane active" id="input_bill" >
+            <form name="input_need" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+                月均消费：   <input type="text" name="consumption" /> 元<br />
+                月通话时长： <input type="text" name="talktime"/> 分钟<br />
+                上网流量：   <input type="text" name="net"/> M<br />
+                             <input class="btn btn-primary btn-lg" type="submit" name="input_bill_button" value="确定" />
+            </form> 
+            <?php if(isset($_POST['input_bill_button'])) include 'need_analize.php';?>  
+         </div>  
+         
+         
+          <!--页2-->
+         <div class="tab-pane " id="upload_bill">
             <form name="send" method="post" action="readhtml.php" enctype="multipart/form-data">
             手机号码：<input type="text" name="phonenumber" ><br/>
              账单日期: <input type="text" name="year">年
@@ -42,18 +53,18 @@
                 <option value="11" >11</option>
                 <option value="12" >12</option>
                 </select> 月<br>
-                上传账单：<input type="file" name="myfile" />
+                上传账单：<input type="file" name="mybill" />
                 <input type="hidden" name="MAX_FILE_SIZE" value="10241024"/>
-                <input type="submit" name="upload" value="上传"/>
+                <input type="submit" name="upload_bill_button" value="确定"/>
                 <?php
-                    if(isset($_POST['upload'])){
+                    if(isset($_POST['upload_bill_button'])){
                         if(!is_dir("filesaver")){
                             mkdir("filesaver");
                         }
-                        $file=$_FILES['myfile'];
+                        $file=$_FILES['mybill'];
                         if($_FILES['myfile']['error']>0){
                             echo '上传错误';
-                            switch($_FILES['myfile']['error']){
+                            switch($_FILES['mybill']['error']){
                                 case 1:
                                 echo '请上传小于8M的文件';//case:2 echo '超出表单预定的范围';break;
                                 break;
@@ -65,7 +76,7 @@
                                 break;
                             }
                         }else{
-                                if(is_uploaded_file($_FILES['myfile']['tmp_name'])){
+                                if(is_uploaded_file($_FILES['mybill']['tmp_name'])){
                                     $phonenumber=trim($_POST['phonenumber']);
                                     //$str=substr($file['name'],-4,4);
                                     $str='.html';
@@ -78,23 +89,11 @@
                     }  
                 ?> 
             </form>
-         </div>
-         
-         <!--页2-->
-         <div class="tab-pane" id="input_bill">
-            <form name="input_bill" method="post" action="">
-                月均消费：   <input type="text" name="consumption" /> 元<br />
-                月通话时长： <input type="text" name="talktime"/> 分钟<br />
-                上网流量：   <input type="text" name="net"/> M<br />
-                套餐类型：   <input type="radio" name="combotype" value="radiobutton" checked>更多本地通话 
-                             <input type="radio" name="combotype" value="radiobutton">更多长途漫游 
-                             <input type="radio" name="combotype" value="radiobutton">更多上网流量<br> 
-            </form>
-         </div>
-         
-        
-        
-  </div><!--页内容结束-->
+         </div> 
+          
+      </div><!--页内容结束-->
   </div><!--标签页结束-->
+  
+
 </body>
 </html>

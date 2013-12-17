@@ -25,15 +25,16 @@
     $d=ltrim($c,"基本通话费");
     echo $d."<br>";
     */
-    $type1="月使用费";
     $a1=stristr($str,"月使用费");
-    //echo $a1."<br>";
     $b1=strstr($a1,"元");
-    // echo $b1."<br>";
     $c1=rtrim($a1,$b1);
-    //echo $c1."<br>";
-    $month_cost1=intval(ltrim($c1,$type1));
-    echo $month_cost1."<br>"; 
+    $month_cost1=intval(ltrim($c1,"月使用费"));
+    //echo $month_cost1."<br>";
+    
+    $a2=stristr($str,"含");
+    $b2=strstr($a2,"分钟");
+    $c2=rtrim($a2,$b2);
+    echo $c2."<br>";
     
     $result1 = mysql_query("update combo set monthcost= '".$month_cost1."' where id = '".$combo[$i][0]."' ");
     if(!$result1) echo mysql_error($link);
