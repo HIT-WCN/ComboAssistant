@@ -5,7 +5,8 @@
     while($row = mysql_fetch_array($result))
     {
                $combo[$i]=array($row['id']/*0*/,$row['name']/*1*/,$row['info']/*2*/,$row['monthcost']/*3*/,
-                                $row['talktime']/*4*/,$row['talkprice']/*5*/,$row['net']/*6*/,$row['netprice']/*7*/);//则combo[0][1]表示第一个套餐记录中的name信息
+                                $row['talktime']/*4*/,$row['talkprice']/*5*/,$row['net']/*6*/,$row['netprice']/*7*/
+                                ,$row['link']);//则combo[0][1]表示第一个套餐记录中的name信息
                $i++;
     }
     $combonum=mysql_num_rows($result);
@@ -25,7 +26,7 @@
     for($j=0;$j<$combonum;$j++)
     {
         $outside_combo_cost[$j]=0;
-        $total_cost[$i]=0;
+        $total_cost[$j]=0;
     }
     
     for($i=0;$i<$combonum;$i++)
@@ -62,6 +63,7 @@
     <table class="table  table-hover table-bordered">
     <tr class="success">
     <td width="10px"><p>序号</p></td>  <td><p>套餐名称</p></td> <td><p>详细信息</p></td>    <td><p>套餐预计花费</p></td>
+    <td><p>链接</p></td>
     </tr>
     <?php
     $count=0;
@@ -71,17 +73,20 @@
         {
             if($total_cost[$j] <= $total_cost[$i])
             {
-                $temp3=$total_cost[$i];
+               $temp3=$total_cost[$i];
                 $temp1=$combo[$i][1];
                 $temp2=$combo[$i][2];
+                $temp4=$combo[$i][8];
                 
                 $total_cost[$i]=$total_cost[$j];
                 $combo[$i][1]=$combo[$j][1];
                 $combo[$i][2]=$combo[$j][2];
+                $combo[$i][8]=$combo[$j][8];
                 
                 $total_cost[$j]=$temp3;
                 $combo[$j][1]=$temp1;
                 $combo[$j][2]=$temp2;
+                $combo[$j][8]=$temp4;
             }
         }
     }
@@ -94,6 +99,7 @@
             <td><?php echo $combo[$i][1];?></td>
             <td><?php echo $combo[$i][2];?></td>
             <td><?php echo $total_cost[$i];?></td>
+            <td><a href="<?php echo  $combo[$i][8]?>" target="_blank">连接</a></td>
             </tr>
    
    
@@ -102,4 +108,5 @@
         
     }
     ?>
+	<script src="http://tjs.sjs.sinajs.cn/open/thirdpart/js/frame/appclient.js" type="text/javascript" charset="utf-8"></script>
     </table>

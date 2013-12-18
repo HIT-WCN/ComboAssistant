@@ -28,11 +28,12 @@ if (empty($_SESSION['oauth2']["user_id"])) {
 <head>
 <title>Home</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script src="http://tjs.sjs.sinajs.cn/t35/apps/opent/js/frames/client.js" language="JavaScript"></script>
+
 <link href="http://www.see-source.com/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script src="http://www.see-source.com/bootstrap/js/jquery.js" type="text/javascript"></script>
 <script src="http://www.see-source.com/bootstrap/js/bootstrap-tab.js"  type="text/javascript"></script>
 <script src="http://www.see-source.com/bootstrap/js/bootstrap-button.js"  type="text/javascript"></script>
+
 </head>
 <body style="width:500px; margin:auto;">
   <div><h1>套餐助手</h1></div>
@@ -117,6 +118,6 @@ if (empty($_SESSION['oauth2']["user_id"])) {
       </div><!--页内容结束-->
   </div><!--标签页结束-->
   
-
+<script src="http://tjs.sjs.sinajs.cn/open/thirdpart/js/frame/appclient.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
