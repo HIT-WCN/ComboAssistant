@@ -5,23 +5,23 @@
     while($row = mysql_fetch_array($result))
     {
                $combo[$i]=array($row['id']/*0*/,$row['name']/*1*/,$row['info']/*2*/,$row['monthcost']/*3*/,
-                                $row['talktime']/*4*/,$row['talkprice']/*5*/,$row['net']/*6*/,$row['netprice']/*7*/);//Ôòcombo[0][1]±íÊ¾µÚÒ»¸öÌ×²Í¼ÇÂ¼ÖĞµÄnameĞÅÏ¢
+                                $row['talktime']/*4*/,$row['talkprice']/*5*/,$row['net']/*6*/,$row['netprice']/*7*/);//åˆ™combo[0][1]è¡¨ç¤ºç¬¬ä¸€ä¸ªå¥—é¤è®°å½•ä¸­çš„nameä¿¡æ¯
                $i++;
     }
     $combonum=mysql_num_rows($result);
-    /*»ñÈ¡Ö÷Ò³±íµ¥Êı¾İ*/
+    /*è·å–ä¸»é¡µè¡¨å•æ•°æ®*/
     $consumption=$_POST['consumption'];
     $talktime=$_POST['talktime'];
     $net=$_POST['net'];
     //echo $consumption."<br>".$talktime."<br>".$net;
-    //½«Ì×²ÍÏû·Ñ$outside_combo_cost[$i]ÓëÊµ¼ÊÔÂ¾ùÏû·Ñ±È½Ï
+    //å°†å¥—é¤æ¶ˆè´¹$outside_combo_cost[$i]ä¸å®é™…æœˆå‡æ¶ˆè´¹æ¯”è¾ƒ
     $standard_message_price=floatval(0.10);
     //echo "<br>".$standard_talk_price."<br>".$standard_net_price."<br>".$standard_message_price."<br>";   
  
     
-    //²ßÂÔ£º¼ÆËãÃ¿ÖÖÌ×²Í°´ÕÕÓÃ»§ĞèÇóËùĞè»¨·Ñ
-    $outside_combo_cost=array();//ĞèÇó³¬³öÌ×²ÍÌá¹©·¶Î§£¬Ôò¸ù¾İ³¬³ö¹æÔò¼Æ·Ñ
-    $total_cost=array();//Ì×²Í°üÔÂ·ÑÓÃ+³¬³öÌ×²Í·ÑÓÃ
+    //ç­–ç•¥ï¼šè®¡ç®—æ¯ç§å¥—é¤æŒ‰ç…§ç”¨æˆ·éœ€æ±‚æ‰€éœ€èŠ±è´¹
+    $outside_combo_cost=array();//éœ€æ±‚è¶…å‡ºå¥—é¤æä¾›èŒƒå›´ï¼Œåˆ™æ ¹æ®è¶…å‡ºè§„åˆ™è®¡è´¹
+    $total_cost=array();//å¥—é¤åŒ…æœˆè´¹ç”¨+è¶…å‡ºå¥—é¤è´¹ç”¨
     for($j=0;$j<$combonum;$j++)
     {
         $outside_combo_cost[$j]=0;
@@ -43,25 +43,25 @@
         $total_cost[$i]=$outside_combo_cost[$i]+$combo[$i][3];
     }
     ?>
-    <p>ÄúµÄĞèÇóÎª£º</p>
+    <p>æ‚¨çš„éœ€æ±‚ä¸ºï¼š</p>
         <table class="table-bordered">
             <tr class="success">
-            <td><p>ÔÂ¾ùÏû·Ñ</p></td>
-            <td><p>ÔÂÍ¨»°Ê±³¤</p></td>
-            <td><p>ÉÏÍøÁ÷Á¿</p></td>
+            <td><p>æœˆå‡æ¶ˆè´¹</p></td>
+            <td><p>æœˆé€šè¯æ—¶é•¿</p></td>
+            <td><p>ä¸Šç½‘æµé‡</p></td>
             </tr>
             
             <tr class="warning">
-            <td><?php echo $consumption."Ôª"?></td>
-            <td><?php echo $talktime."·ÖÖÓ"?></td>
+            <td><?php echo $consumption."å…ƒ"?></td>
+            <td><?php echo $talktime."åˆ†é’Ÿ"?></td>
             <td><?php echo $net."M"?></td>
             </tr>
         
         </table>
-    <p>ÎªÄúÑ¡ÔñµÄÌ×²ÍÈçÏÂ:</p>
+    <p>ä¸ºæ‚¨é€‰æ‹©çš„å¥—é¤å¦‚ä¸‹:</p>
     <table class="table  table-hover table-bordered">
     <tr class="success">
-    <td width="10px"><p>ĞòºÅ</p></td>  <td><p>Ì×²ÍÃû³Æ</p></td> <td><p>ÏêÏ¸ĞÅÏ¢</p></td>    <td><p>Ì×²ÍÔ¤¼Æ»¨·Ñ</p></td>
+    <td width="10px"><p>åºå·</p></td>  <td><p>å¥—é¤åç§°</p></td> <td><p>è¯¦ç»†ä¿¡æ¯</p></td>    <td><p>å¥—é¤é¢„è®¡èŠ±è´¹</p></td>
     </tr>
     <?php
     $count=0;

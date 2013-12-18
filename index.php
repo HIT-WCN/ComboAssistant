@@ -1,44 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
-<title>Home</title>
-<link href="http://www.see-source.com/bootstrap/css/bootstrap.css" rel="stylesheet">
+<?php
+session_start();
 
+include_once( 'config.php' );
+include_once( 'saetv2.ex.class.php' );
+
+//ä»POSTè¿‡æ¥çš„signed_requestä¸­æå–oauth2ä¿¡æ¯
+if(!empty($_REQUEST["signed_request"])){
+	$o = new SaeTOAuthV2( WB_AKEY , WB_SKEY  );
+	$data=$o->parseSignedRequest($_REQUEST["signed_request"]);
+	if($data=='-2'){
+		 die('ç­¾åé”™è¯¯!');
+	}else{
+		$_SESSION['oauth2']=$data;
+	}
+}
+//åˆ¤æ–­ç”¨æˆ·æ˜¯å¦æˆæƒ
+if (empty($_SESSION['oauth2']["user_id"])) {
+		include "auth.php";
+		exit;
+} else {
+		$c = new SaeTClientV2( WB_AKEY , WB_SKEY ,$_SESSION['oauth2']['oauth_token'] ,'' );
+} 
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Home</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="http://tjs.sjs.sinajs.cn/t35/apps/opent/js/frames/client.js" language="JavaScript"></script>
+<link href="http://www.see-source.com/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script src="http://www.see-source.com/bootstrap/js/jquery.js" type="text/javascript"></script>
 <script src="http://www.see-source.com/bootstrap/js/bootstrap-tab.js"  type="text/javascript"></script>
 <script src="http://www.see-source.com/bootstrap/js/bootstrap-button.js"  type="text/javascript"></script>
-<!-- <script src="http://www.see-source.com/bootstrap/js/bootstrap-.js"  type="text/javascript"></script> -->
 </head>
-
 <body style="width:500px; margin:auto;">
-  <div><h1>Ì×²ÍÖúÊÖ</h1></div>
+  <div><h1>å¥—é¤åŠ©æ‰‹</h1></div>
   
-  <!--±êÇ©Ò³-->
+  <!--æ ‡ç­¾é¡µ-->
   <div>
-      <!--Ò³µ¼º½-->
+      <!--é¡µå¯¼èˆª-->
       <ul class="nav nav-tabs">
-      <li class="active"><a href="#input_bill" data-toggle="tab" >ÊÖ¶¯ÊäÈë</a></li>
-      <li class=""><a href="#upload_bill" data-toggle="tab" >ÉÏ´«ÕËµ¥</a></li>  
+      <li class="active"><a href="#input_bill" data-toggle="tab" >æ‰‹åŠ¨è¾“å…¥</a></li>
+      <li class=""><a href="#upload_bill" data-toggle="tab" >ä¸Šä¼ è´¦å•</a></li>  
       </ul>
       <div class="tab-content">
-         <!--Ò³1-->
+         <!--é¡µ1-->
          <div class="tab-pane active" id="input_bill" >
             <form name="input_need" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-                ÔÂ¾ùÏû·Ñ£º   <input type="text" name="consumption" /> Ôª<br />
-                ÔÂÍ¨»°Ê±³¤£º <input type="text" name="talktime"/> ·ÖÖÓ<br />
-                ÉÏÍøÁ÷Á¿£º   <input type="text" name="net"/> M<br />
-                             <input class="btn btn-primary btn-lg" type="submit" name="input_bill_button" value="È·¶¨" />
+                æœˆå‡æ¶ˆè´¹ï¼š   <input type="text" name="consumption" /> å…ƒ<br />
+                æœˆé€šè¯æ—¶é•¿ï¼š <input type="text" name="talktime"/> åˆ†é’Ÿ<br />
+                ä¸Šç½‘æµé‡ï¼š   <input type="text" name="net"/> M<br />
+                             <input class="btn btn-primary btn-lg" type="submit" name="input_bill_button" value="ç¡®å®š" />
             </form> 
             <?php if(isset($_POST['input_bill_button'])) include 'need_analize.php';?>  
          </div>  
          
          
-          <!--Ò³2-->
+          <!--é¡µ2-->
          <div class="tab-pane " id="upload_bill">
             <form name="send" method="post" action="readhtml.php" enctype="multipart/form-data">
-            ÊÖ»úºÅÂë£º<input type="text" name="phonenumber" ><br/>
-             ÕËµ¥ÈÕÆÚ: <input type="text" name="year">Äê
+            æ‰‹æœºå·ç ï¼š<input type="text" name="phonenumber" ><br/>
+             è´¦å•æ—¥æœŸ: <input type="text" name="year">å¹´
                 <select name="month">
                 <option value="1" selected="selected">1</option>
                 <option value="2" >2</option>
@@ -52,10 +75,10 @@
                 <option value="10" >10</option>
                 <option value="11" >11</option>
                 <option value="12" >12</option>
-                </select> ÔÂ<br>
-                ÉÏ´«ÕËµ¥£º<input type="file" name="mybill" />
+                </select> æœˆ<br>
+                ä¸Šä¼ è´¦å•ï¼š<input type="file" name="mybill" />
                 <input type="hidden" name="MAX_FILE_SIZE" value="10241024"/>
-                <input type="submit" name="upload_bill_button" value="È·¶¨"/>
+                <input type="submit" name="upload_bill_button" value="ç¡®å®š"/>
                 <?php
                     if(isset($_POST['upload_bill_button'])){
                         if(!is_dir("filesaver")){
@@ -63,16 +86,16 @@
                         }
                         $file=$_FILES['mybill'];
                         if($_FILES['myfile']['error']>0){
-                            echo 'ÉÏ´«´íÎó';
+                            echo 'ä¸Šä¼ é”™è¯¯';
                             switch($_FILES['mybill']['error']){
                                 case 1:
-                                echo 'ÇëÉÏ´«Ğ¡ÓÚ8MµÄÎÄ¼ş';//case:2 echo '³¬³ö±íµ¥Ô¤¶¨µÄ·¶Î§';break;
+                                echo 'è¯·ä¸Šä¼ å°äº8Mçš„æ–‡ä»¶';//case:2 echo 'è¶…å‡ºè¡¨å•é¢„å®šçš„èŒƒå›´';break;
                                 break;
                                 case 3:
-                                echo 'Ö»ÉÏ´«ÁË²¿·ÖÎÄ¼ş';
+                                echo 'åªä¸Šä¼ äº†éƒ¨åˆ†æ–‡ä»¶';
                                 break;
                                 case 4:
-                                echo 'Ã»ÓĞÉÏ´«ÈÎºÎÎÄ¼ş';
+                                echo 'æ²¡æœ‰ä¸Šä¼ ä»»ä½•æ–‡ä»¶';
                                 break;
                             }
                         }else{
@@ -80,9 +103,9 @@
                                     $phonenumber=trim($_POST['phonenumber']);
                                     //$str=substr($file['name'],-4,4);
                                     $str='.html';
-                                    $path="filesaver/".$phonenumber.$str;//°ÑÊÖ»úºÅ»»³ÉÎ¢²©ÕËºÅÒÔÇø·Ö
+                                    $path="filesaver/".$phonenumber.$str;//æŠŠæ‰‹æœºå·æ¢æˆå¾®åšè´¦å·ä»¥åŒºåˆ†
                                     if(move_uploaded_file($file['tmp_name'],$path)){
-                                    echo "<br>"."ÉÏ´«Íê³É";
+                                    echo "<br>"."ä¸Šä¼ å®Œæˆ";
                                     }
                                 }
                         }
@@ -91,8 +114,8 @@
             </form>
          </div> 
           
-      </div><!--Ò³ÄÚÈİ½áÊø-->
-  </div><!--±êÇ©Ò³½áÊø-->
+      </div><!--é¡µå†…å®¹ç»“æŸ-->
+  </div><!--æ ‡ç­¾é¡µç»“æŸ-->
   
 
 </body>
