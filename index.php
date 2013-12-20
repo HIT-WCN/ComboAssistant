@@ -33,7 +33,7 @@ if (empty($_SESSION['oauth2']["user_id"])) {
 <script src="http://www.see-source.com/bootstrap/js/jquery.js" type="text/javascript"></script>
 <script src="http://www.see-source.com/bootstrap/js/bootstrap-tab.js"  type="text/javascript"></script>
 <script src="http://www.see-source.com/bootstrap/js/bootstrap-button.js"  type="text/javascript"></script>
-
+<link rel="stylesheet" href="css/style.css" />
 </head>
 <body style="width:500px; margin:auto;">
   <div><h1>套餐助手</h1></div>
@@ -49,9 +49,9 @@ if (empty($_SESSION['oauth2']["user_id"])) {
          <!--页1-->
          <div class="tab-pane active" id="input_bill" >
             <form name="input_need" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-                月均消费：   <input type="text" name="consumption" /> 元<br />
-                月通话时长： <input type="text" name="talktime"/> 分钟<br />
-                上网流量：   <input type="text" name="net"/> M<br />
+                <label>月均消费</label>   <input type="text" name="consumption" /> 元<br />
+                <label>月通话时长</label> <input type="text" name="talktime"/> 分钟<br />
+                <label>上网流量</label>   <input type="text" name="net"/> M<br />
                              <input class="btn btn-primary btn-lg" type="submit" name="input_bill_button" value="确定" />
             </form> 
             <?php if(isset($_POST['input_bill_button'])) include 'need_analize.php';?>  

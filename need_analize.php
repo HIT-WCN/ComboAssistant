@@ -14,8 +14,8 @@
     $consumption=$_POST['consumption'];
     $talktime=$_POST['talktime'];
     $net=$_POST['net'];
-    //echo $consumption."<br>".$talktime."<br>".$net;
-    //将套餐消费$outside_combo_cost[$i]与实际月均消费比较
+    $mincost=$consumption*0.8;
+    $maxcost=$consumption*1.2;
     $standard_message_price=floatval(0.10);
     //echo "<br>".$standard_talk_price."<br>".$standard_net_price."<br>".$standard_message_price."<br>";   
  
@@ -44,8 +44,9 @@
         $total_cost[$i]=$outside_combo_cost[$i]+$combo[$i][3];
     }
     ?>
+    <div style="margin: 0 10px 10px 0px;">
     <p>您的需求为：</p>
-        <table class="table-bordered">
+        <table class="table-bordered ">
             <tr class="success">
             <td><p>月均消费</p></td>
             <td><p>月通话时长</p></td>
@@ -59,10 +60,12 @@
             </tr>
         
         </table>
-    <p>为您选择的套餐如下:</p>
-    <table class="table  table-hover table-bordered">
+    </div >   
+    <div style="margin-top: 30px;;">
+    <table class="table  table-hover table-bordered" >
+    <p>移动套餐</p>
     <tr class="success">
-    <td width="10px"><p>序号</p></td>  <td><p>套餐名称</p></td> <td><p>详细信息</p></td>    <td><p>套餐预计花费</p></td>
+    <td style="width: auto;"><p>序号</p></td>  <td><p>套餐名称</p></td> <td><p style="text-align: center;">详细信息</p></td>    <td><p>套餐预计花费</p></td>
     <td><p>链接</p></td>
     </tr>
     <?php
@@ -90,7 +93,7 @@
             }
         }
     }
-    for($i=0;$i<$combonum;$i++)
+    for($i=0;$i<7;$i++)
     {
         
     ?>  
@@ -99,7 +102,7 @@
             <td><?php echo $combo[$i][1];?></td>
             <td><?php echo $combo[$i][2];?></td>
             <td><?php echo $total_cost[$i];?></td>
-            <td><a href="<?php echo  $combo[$i][8]?>" target="_blank">连接</a></td>
+            <td style="vertical-align: middle;"><a href="<?php echo  $combo[$i][8]?>" target="_blank"><img src="image/car.png" /></a></td>
             </tr>
    
    
@@ -110,3 +113,47 @@
     ?>
 	<script src="http://tjs.sjs.sinajs.cn/open/thirdpart/js/frame/appclient.js" type="text/javascript" charset="utf-8"></script>
     </table>
+    
+    </div>
+    <div style="width:8cm; height:3cm;border:0 solid; position: absolute; left: 330px; top:350px;">
+    <p style="text-align: center;">提示信息</p>
+    <p style="margin-left: 20px;">
+    <?php if($total_cost[0]>$consumption)
+            echo "您目前使用的套餐已经很好，以下我们只是给出参考";
+         else 
+            echo "您目前话费够买房子了，还有更好的套餐供你选择呦";
+    ?>
+    </p>
+    </div>
+    <!--div>
+    <iframe src="http://s.10010.com/SearchApp/chseFeeSetList/init" width="500" height="800" ></iframe>
+    </div-->
+    <div>
+    <p>联通套餐</p>
+    <table class="table  table-hover table-bordered">
+    <?php
+        $result2=mysql_query("select * from cucombo"); if(!$result2) echo mysql_errno();
+        $m=0;
+        while($row2 = mysql_fetch_array($result2))
+        {
+                   $cucombo[$m]=array($row2['name']/*0*/,$row2['link']/*1*/,$row2['price']/*2*/);
+                   $m++;
+        }
+        $combonum2=mysql_num_rows($result2);
+        for($m=0;$m<$combonum2;$m++)
+        {
+            if($cucombo[$m][2]<$maxcost)
+            {
+        ?>
+            <tr class="warning">
+                <td><?php echo $cucombo[$m][0];?></td>
+                <td> <a href="<?php echo $cucombo[$m][1];?>" target="_blank"><img src="image/car.png"/></a></td>    
+            </tr>  
+        <?php
+            }    
+        }
+        ?>
+    
+    
+    </table>
+    </div>
